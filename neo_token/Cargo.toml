@@ -1,0 +1,12 @@
+[package]
+name = "neo_token"
+version = "0.1.0"
+edition = "2024"
+
+[package.metadata.include]
+vocabs = ["vocabs/*"]
+
+[dependencies]
+neo_core = { path = "../neo_core" }
+base64 = "0.22.1"
+fancy-regex = "0.15.0"
