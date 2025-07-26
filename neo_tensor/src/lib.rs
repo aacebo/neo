@@ -1,70 +1,29 @@
-mod float32;
-use std::ops::{Add, Div, Mul, Sub};
+mod number;
+pub use number::*;
 
-pub use float32::*;
-use num_traits::Pow;
+mod bool;
+pub use bool::*;
 
 #[derive(Debug, Clone, Copy)]
 pub enum Tensor<const ROWS: usize, const COLS: usize> {
-    Float32(Float32<ROWS, COLS>),
+    Bool(Bool<ROWS, COLS>),
+    Number(Number<ROWS, COLS>),
 }
 
-impl<const ROWS: usize, const COLS: usize> Add<Float32<ROWS, COLS>> for Tensor<ROWS, COLS> {
-    type Output = Float32<ROWS, COLS>;
-
-    fn add(self, rhs: Float32<ROWS, COLS>) -> Self::Output {
+impl<const ROWS: usize, const COLS: usize> std::fmt::Display for Tensor<ROWS, COLS> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         return match self {
-            Self::Float32(lhs) => lhs + rhs,
+            Self::Bool(t) => write!(f, "{}", t),
+            Self::Number(t) => write!(f, "{}", t),
         };
     }
 }
 
-impl<const ROWS: usize, const COLS: usize> Sub<Float32<ROWS, COLS>> for Tensor<ROWS, COLS> {
-    type Output = Float32<ROWS, COLS>;
-
-    fn sub(self, rhs: Float32<ROWS, COLS>) -> Self::Output {
+impl<const ROWS: usize, const COLS: usize> PartialEq for Tensor<ROWS, COLS> {
+    fn eq(&self, other: &Self) -> bool {
         return match self {
-            Self::Float32(lhs) => lhs - rhs,
-        };
-    }
-}
-
-impl<const M: usize, const N: usize, const P: usize> Mul<Float32<N, P>> for Tensor<M, N> {
-    type Output = Float32<M, P>;
-
-    fn mul(self, rhs: Float32<N, P>) -> Self::Output {
-        return match self {
-            Self::Float32(lhs) => lhs * rhs,
-        };
-    }
-}
-
-impl<const M: usize, const N: usize, const P: usize> Div<Float32<N, P>> for Tensor<M, N> {
-    type Output = Float32<M, P>;
-
-    fn div(self, rhs: Float32<N, P>) -> Self::Output {
-        return match self {
-            Self::Float32(lhs) => lhs / rhs,
-        };
-    }
-}
-
-impl<const ROWS: usize, const COLS: usize> Pow<f32> for Tensor<ROWS, COLS> {
-    type Output = Float32<ROWS, COLS>;
-
-    fn pow(self, rhs: f32) -> Self::Output {
-        return match self {
-            Self::Float32(lhs) => lhs.pow(rhs),
-        };
-    }
-}
-
-impl<const ROWS: usize, const COLS: usize> Pow<Float32<ROWS, COLS>> for Tensor<ROWS, COLS> {
-    type Output = Float32<ROWS, COLS>;
-
-    fn pow(self, rhs: Float32<ROWS, COLS>) -> Self::Output {
-        return match self {
-            Self::Float32(lhs) => lhs.pow(rhs),
+            Self::Bool(t) => t == other,
+            Self::Number(t) => t == other,
         };
     }
 }
