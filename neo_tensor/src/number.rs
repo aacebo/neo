@@ -1,5 +1,5 @@
 macro_rules! define_number_type {
-    ($($name:ident $method:ident $default:literal $type:ty)*) => {
+    ($($name:ident, $method:ident, $default:literal, $type:ty)*) => {
         #[derive(Debug, Clone, Copy)]
         pub enum Number<const ROWS: usize, const COLS: usize> {
             $($name($name<ROWS, COLS>), )*
@@ -36,6 +36,16 @@ macro_rules! define_number_type {
                     return self.into();
                 }
             )*
+        }
+
+        impl<const ROWS: usize, const COLS: usize> num_traits::Pow<usize> for Number<ROWS, COLS> {
+            type Output = Self;
+
+            fn pow(self, rhs: usize) -> Self::Output {
+                return match self {
+                    $(Self::$name(lhs) => Self::$name(lhs.pow(rhs)), )*
+                };
+            }
         }
 
         $(
@@ -78,17 +88,6 @@ macro_rules! define_number_type {
                 fn div(self, rhs: $name<N, P>) -> Self::Output {
                     return match self {
                         Self::$name(lhs) => lhs / rhs,
-                        _ => panic!("{} => invalid operation", stringify!($name)),
-                    };
-                }
-            }
-
-            impl<const ROWS: usize, const COLS: usize> num_traits::Pow<$type> for Number<ROWS, COLS> {
-                type Output = $name<ROWS, COLS>;
-
-                fn pow(self, rhs: $type) -> Self::Output {
-                    return match self {
-                        Self::$name(lhs) => lhs.pow(rhs),
                         _ => panic!("{} => invalid operation", stringify!($name)),
                     };
                 }
@@ -284,15 +283,15 @@ macro_rules! define_number_type {
                 }
             }
 
-            impl<const ROWS: usize, const COLS: usize> num_traits::Pow<$type> for $name<ROWS, COLS> {
+            impl<const ROWS: usize, const COLS: usize> num_traits::Pow<usize> for $name<ROWS, COLS> {
                 type Output = Self;
 
-                fn pow(self, rhs: $type) -> Self::Output {
+                fn pow(self, rhs: usize) -> Self::Output {
                     let mut value = [[$default; COLS]; ROWS];
 
                     for i in 0..ROWS {
                         for j in 0..COLS {
-                            value[i][j] = num_traits::Pow::pow(self.value[i][j], rhs);
+                            value[i][j] = num_traits::pow(self.value[i][j], rhs);
                         }
                     }
 
@@ -308,7 +307,7 @@ macro_rules! define_number_type {
 
                     for i in 0..ROWS {
                         for j in 0..COLS {
-                            value[i][j] = num_traits::Pow::pow(self.value[i][j], rhs.value[i][j]);
+                            value[i][j] = num_traits::pow(self.value[i][j], rhs.value[i][j] as usize);
                         }
                     }
 
@@ -349,9 +348,14 @@ macro_rules! define_number_type {
 }
 
 define_number_type! {
-    UInt8   to_uint8    0   u8
-    UInt16  to_uint16   0   u16
-    UInt32  to_uint32   0   u32
-    Float32 to_f32      0.0  f32
-    Float64 to_f64      0.0  f64
+    Int8,    to_i8,     0,      i8
+    Int16,   to_i16,    0,      i16
+    Int32,   to_i32,    0,      i32
+    Int64,   to_i64,    0,      i64
+    UInt8,   to_u8,     0,      u8
+    UInt16,  to_u16,    0,      u16
+    UInt32,  to_u32,    0,      u32
+    UInt64,  to_u64,    0,      u64
+    Float32, to_f32,    0.0,    f32
+    Float64, to_f64,    0.0,    f64
 }

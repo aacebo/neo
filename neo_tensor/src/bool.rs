@@ -1,4 +1,4 @@
-use crate::{Float32, Float64, Tensor, UInt8, UInt16, UInt32};
+use crate::{Float32, Float64, Int8, Int16, Int32, Int64, Tensor, UInt8, UInt16, UInt32, UInt64};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Bool<const ROWS: usize, const COLS: usize> {
@@ -18,6 +18,70 @@ impl<const ROWS: usize, const COLS: usize> std::ops::Index<usize> for Bool<ROWS,
 
     fn index(&self, index: usize) -> &Self::Output {
         return &self.value[index];
+    }
+}
+
+impl<const ROWS: usize, const COLS: usize> Into<Int8<ROWS, COLS>> for Bool<ROWS, COLS> {
+    fn into(self) -> Int8<ROWS, COLS> {
+        let mut tensor = Int8::new();
+
+        for i in 0..ROWS {
+            for j in 0..COLS {
+                if self.value[i][j] {
+                    tensor.value[i][j] = 1;
+                }
+            }
+        }
+
+        return tensor;
+    }
+}
+
+impl<const ROWS: usize, const COLS: usize> Into<Int16<ROWS, COLS>> for Bool<ROWS, COLS> {
+    fn into(self) -> Int16<ROWS, COLS> {
+        let mut tensor = Int16::new();
+
+        for i in 0..ROWS {
+            for j in 0..COLS {
+                if self.value[i][j] {
+                    tensor.value[i][j] = 1;
+                }
+            }
+        }
+
+        return tensor;
+    }
+}
+
+impl<const ROWS: usize, const COLS: usize> Into<Int32<ROWS, COLS>> for Bool<ROWS, COLS> {
+    fn into(self) -> Int32<ROWS, COLS> {
+        let mut tensor = Int32::new();
+
+        for i in 0..ROWS {
+            for j in 0..COLS {
+                if self.value[i][j] {
+                    tensor.value[i][j] = 1;
+                }
+            }
+        }
+
+        return tensor;
+    }
+}
+
+impl<const ROWS: usize, const COLS: usize> Into<Int64<ROWS, COLS>> for Bool<ROWS, COLS> {
+    fn into(self) -> Int64<ROWS, COLS> {
+        let mut tensor = Int64::new();
+
+        for i in 0..ROWS {
+            for j in 0..COLS {
+                if self.value[i][j] {
+                    tensor.value[i][j] = 1;
+                }
+            }
+        }
+
+        return tensor;
     }
 }
 
@@ -56,6 +120,22 @@ impl<const ROWS: usize, const COLS: usize> Into<UInt16<ROWS, COLS>> for Bool<ROW
 impl<const ROWS: usize, const COLS: usize> Into<UInt32<ROWS, COLS>> for Bool<ROWS, COLS> {
     fn into(self) -> UInt32<ROWS, COLS> {
         let mut tensor = UInt32::new();
+
+        for i in 0..ROWS {
+            for j in 0..COLS {
+                if self.value[i][j] {
+                    tensor.value[i][j] = 1;
+                }
+            }
+        }
+
+        return tensor;
+    }
+}
+
+impl<const ROWS: usize, const COLS: usize> Into<UInt64<ROWS, COLS>> for Bool<ROWS, COLS> {
+    fn into(self) -> UInt64<ROWS, COLS> {
+        let mut tensor = UInt64::new();
 
         for i in 0..ROWS {
             for j in 0..COLS {
