@@ -317,7 +317,23 @@ macro_rules! define_number_type {
 
             impl<const ROWS: usize, const COLS: usize> std::fmt::Display for $name<ROWS, COLS> {
                 fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-                    return write!(f, "{:#?}", self.value);
+                    write!(f, "[\n")?;
+
+                    for i in 0..ROWS {
+                        write!(f, "  ")?;
+
+                        for j in 0..COLS {
+                            write!(f, "{}", self.value[i][j])?;
+
+                            if j < COLS - 1 {
+                                write!(f, ", ")?;
+                            }
+                        }
+
+                        write!(f, "\n")?;
+                    }
+
+                    return write!(f, "]\n");
                 }
             }
 

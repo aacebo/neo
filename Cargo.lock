@@ -105,6 +105,8 @@ version = "0.1.0"
 name = "neo_nn"
 version = "0.1.0"
 dependencies = [
+ "neo_core",
+ "neo_tensor",
  "rand",
 ]
 

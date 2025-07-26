@@ -11,6 +11,8 @@ pub fn should_add_bool_tensor_to_uint8_tensor() {
             assert_eq!(out[i][j], 3);
         }
     }
+
+    println!("{}", out);
 }
 
 #[test]
