@@ -1,5 +1,5 @@
 macro_rules! define_number_type {
-    ($($name:ident $default:literal $type:ty)*) => {
+    ($($name:ident $method:ident $default:literal $type:ty)*) => {
         #[derive(Debug, Clone, Copy)]
         pub enum Number<const ROWS: usize, const COLS: usize> {
             $($name($name<ROWS, COLS>), )*
@@ -28,6 +28,14 @@ macro_rules! define_number_type {
                     _ => false,
                 };
             }
+        }
+
+        impl<const ROWS: usize, const COLS: usize> $crate::Bool<ROWS, COLS> {
+            $(
+                pub fn $method(self) -> $name<ROWS, COLS> {
+                    return self.into();
+                }
+            )*
         }
 
         $(
@@ -160,6 +168,22 @@ macro_rules! define_number_type {
                 }
             }
 
+            impl<const ROWS: usize, const COLS: usize> std::ops::Add<$type> for $name<ROWS, COLS> {
+                type Output = Self;
+
+                fn add(self, rhs: $type) -> Self::Output {
+                    let mut value = [[$default; COLS]; ROWS];
+
+                    for i in 0..ROWS {
+                        for j in 0..COLS {
+                            value[i][j] = self.value[i][j] + rhs;
+                        }
+                    }
+
+                    return Self::Output { value };
+                }
+            }
+
             impl<const ROWS: usize, const COLS: usize> std::ops::Sub for $name<ROWS, COLS> {
                 type Output = Self;
 
@@ -277,9 +301,9 @@ macro_rules! define_number_type {
 }
 
 define_number_type! {
-    UInt8    0   u8
-    UInt16   0   u16
-    UInt32   0   u32
-    Float32 0.0  f32
-    Float64 0.0  f64
+    UInt8   to_uint8    0   u8
+    UInt16  to_uint16   0   u16
+    UInt32  to_uint32   0   u32
+    Float32 to_f32      0.0  f32
+    Float64 to_f64      0.0  f64
 }
