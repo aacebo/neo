@@ -200,6 +200,22 @@ macro_rules! define_number_type {
                 }
             }
 
+            impl<const ROWS: usize, const COLS: usize> std::ops::Sub<$type> for $name<ROWS, COLS> {
+                type Output = Self;
+
+                fn sub(self, rhs: $type) -> Self::Output {
+                    let mut value = [[$default; COLS]; ROWS];
+
+                    for i in 0..ROWS {
+                        for j in 0..COLS {
+                            value[i][j] = self.value[i][j] - rhs;
+                        }
+                    }
+
+                    return Self::Output { value };
+                }
+            }
+
             impl<const M: usize, const N: usize, const P: usize> std::ops::Mul<$name<N, P>> for $name<M, N> {
                 type Output = $name<M, P>;
 
@@ -218,6 +234,22 @@ macro_rules! define_number_type {
                 }
             }
 
+            impl<const ROWS: usize, const COLS: usize> std::ops::Mul<$type> for $name<ROWS, COLS> {
+                type Output = Self;
+
+                fn mul(self, rhs: $type) -> Self::Output {
+                    let mut value = [[$default; COLS]; ROWS];
+
+                    for i in 0..ROWS {
+                        for j in 0..COLS {
+                            value[i][j] = self.value[i][j] * rhs;
+                        }
+                    }
+
+                    return Self::Output { value };
+                }
+            }
+
             impl<const M: usize, const N: usize, const P: usize> std::ops::Div<$name<N, P>> for $name<M, N> {
                 type Output = $name<M, P>;
 
@@ -229,6 +261,22 @@ macro_rules! define_number_type {
                             for n in 0..P {
                                 value[i][j] += self.value[i][n] / rhs.value[n][j]
                             }
+                        }
+                    }
+
+                    return Self::Output { value };
+                }
+            }
+
+            impl<const ROWS: usize, const COLS: usize> std::ops::Div<$type> for $name<ROWS, COLS> {
+                type Output = Self;
+
+                fn div(self, rhs: $type) -> Self::Output {
+                    let mut value = [[$default; COLS]; ROWS];
+
+                    for i in 0..ROWS {
+                        for j in 0..COLS {
+                            value[i][j] = self.value[i][j] / rhs;
                         }
                     }
 
