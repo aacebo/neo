@@ -106,6 +106,19 @@ macro_rules! define_number_type {
                         value: [[$default; COLS]; ROWS],
                     };
                 }
+
+                pub fn rand() -> Self {
+                    let mut rng = rand::rng();
+                    let mut value = [[$default; COLS]; ROWS];
+
+                    for i in 0..ROWS {
+                        for j in 0..COLS {
+                            value[i][j] = rand::Rng::random::<$type>(&mut rng);
+                        }
+                    }
+
+                    return Self { value };
+                }
             }
 
             impl<const ROWS: usize, const COLS: usize> From<$type> for $name<ROWS, COLS> {
