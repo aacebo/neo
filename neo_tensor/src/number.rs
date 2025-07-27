@@ -82,6 +82,17 @@ macro_rules! define_number_type {
                 }
             }
 
+            impl<const ROWS: usize, const COLS: usize> std::ops::Mul<$type> for Number<ROWS, COLS> {
+                type Output = $name<ROWS, COLS>;
+
+                fn mul(self, rhs: $type) -> Self::Output {
+                    return match self {
+                        Self::$name(lhs) => lhs * rhs,
+                        _ => panic!("{} => invalid operation", stringify!($name)),
+                    };
+                }
+            }
+
             impl<const ROWS: usize, const COLS: usize> num_traits::Pow<$name<ROWS, COLS>> for Number<ROWS, COLS> {
                 type Output = $name<ROWS, COLS>;
 
