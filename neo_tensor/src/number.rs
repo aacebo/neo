@@ -127,6 +127,12 @@ macro_rules! define_number_type {
                 }
             }
 
+            impl<const ROWS: usize, const COLS: usize> From<[[$type; COLS]; ROWS]> for $name<ROWS, COLS> {
+                fn from(value: [[$type; COLS]; ROWS]) -> Self {
+                    return Self { value };
+                }
+            }
+
             impl<const ROWS: usize, const COLS: usize> std::ops::Index<usize> for $name<ROWS, COLS> {
                 type Output = [$type; COLS];
 
@@ -222,8 +228,8 @@ macro_rules! define_number_type {
                     let mut value = [[$default; P]; M];
 
                     for i in 0..M {
-                        for j in 0..N {
-                            for n in 0..P {
+                        for j in 0..P {
+                            for n in 0..N {
                                 value[i][j] += self.value[i][n] * rhs.value[n][j]
                             }
                         }
@@ -256,8 +262,8 @@ macro_rules! define_number_type {
                     let mut value = [[$default; P]; M];
 
                     for i in 0..M {
-                        for j in 0..N {
-                            for n in 0..P {
+                        for j in 0..P {
+                            for n in 0..N {
                                 value[i][j] += self.value[i][n] / rhs.value[n][j]
                             }
                         }
