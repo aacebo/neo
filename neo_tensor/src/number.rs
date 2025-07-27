@@ -82,17 +82,6 @@ macro_rules! define_number_type {
                 }
             }
 
-            impl<const M: usize, const N: usize, const P: usize> std::ops::Div<$name<N, P>> for Number<M, N> {
-                type Output = $name<M, P>;
-
-                fn div(self, rhs: $name<N, P>) -> Self::Output {
-                    return match self {
-                        Self::$name(lhs) => lhs / rhs,
-                        _ => panic!("{} => invalid operation", stringify!($name)),
-                    };
-                }
-            }
-
             impl<const ROWS: usize, const COLS: usize> num_traits::Pow<$name<ROWS, COLS>> for Number<ROWS, COLS> {
                 type Output = $name<ROWS, COLS>;
 
@@ -248,24 +237,6 @@ macro_rules! define_number_type {
                     for i in 0..ROWS {
                         for j in 0..COLS {
                             value[i][j] = self.value[i][j] * rhs;
-                        }
-                    }
-
-                    return Self::Output { value };
-                }
-            }
-
-            impl<const M: usize, const N: usize, const P: usize> std::ops::Div<$name<N, P>> for $name<M, N> {
-                type Output = $name<M, P>;
-
-                fn div(self, rhs: $name<N, P>) -> Self::Output {
-                    let mut value = [[$default; P]; M];
-
-                    for i in 0..M {
-                        for j in 0..P {
-                            for n in 0..N {
-                                value[i][j] += self.value[i][n] / rhs.value[n][j]
-                            }
                         }
                     }
 
