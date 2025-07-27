@@ -354,14 +354,14 @@ macro_rules! define_number_type {
 }
 
 define_number_type! {
-    Int8,    to_i8,     0,      i8
-    Int16,   to_i16,    0,      i16
-    Int32,   to_i32,    0,      i32
-    Int64,   to_i64,    0,      i64
-    UInt8,   to_u8,     0,      u8
-    UInt16,  to_u16,    0,      u16
-    UInt32,  to_u32,    0,      u32
-    UInt64,  to_u64,    0,      u64
-    Float32, to_f32,    0.0,    f32
-    Float64, to_f64,    0.0,    f64
+    Int8,       to_i8,     0,      i8
+    Int16,      to_i16,    0,      i16
+    Int32,      to_i32,    0,      i32
+    Int64,      to_i64,    0,      i64
+    UInt8,      to_u8,     0,      u8
+    UInt16,     to_u16,    0,      u16
+    UInt32,     to_u32,    0,      u32
+    UInt64,     to_u64,    0,      u64
+    Float32,    to_f32,    0.0,    f32
+    Float64,    to_f64,    0.0,    f64
 }
