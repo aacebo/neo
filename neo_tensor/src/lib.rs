@@ -6,6 +6,9 @@ pub use number::*;
 mod signed;
 pub use signed::*;
 
+mod float;
+pub use float::*;
+
 mod bool;
 pub use bool::*;
 
