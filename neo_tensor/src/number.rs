@@ -119,6 +119,14 @@ macro_rules! define_number_type {
 
                     return Self { value };
                 }
+
+                pub fn to_tensor(self) -> $crate::Tensor<ROWS, COLS> {
+                    return $crate::Tensor::Number(self.to_number());
+                }
+
+                pub fn to_number(self) -> Number<ROWS, COLS> {
+                    return Number::$name(self);
+                }
             }
 
             impl<const ROWS: usize, const COLS: usize> From<$type> for $name<ROWS, COLS> {

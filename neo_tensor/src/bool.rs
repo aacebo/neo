@@ -5,6 +5,12 @@ pub struct Bool<const ROWS: usize, const COLS: usize> {
     pub value: [[bool; COLS]; ROWS],
 }
 
+impl<const ROWS: usize, const COLS: usize> Bool<ROWS, COLS> {
+    pub fn to_tensor(self) -> crate::Tensor<ROWS, COLS> {
+        return crate::Tensor::Bool(self);
+    }
+}
+
 impl<const ROWS: usize, const COLS: usize> From<bool> for Bool<ROWS, COLS> {
     fn from(value: bool) -> Self {
         return Self {

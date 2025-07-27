@@ -1,6 +1,9 @@
 mod net;
 pub use net::*;
 
+mod layer;
+pub use layer::*;
+
 mod neuron;
 pub use neuron::*;
 
