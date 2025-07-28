@@ -60,10 +60,32 @@ macro_rules! define_number_type {
                 }
             }
 
+            impl<const ROWS: usize, const COLS: usize> std::ops::Add<$type> for Number<ROWS, COLS> {
+                type Output = $name<ROWS, COLS>;
+
+                fn add(self, rhs: $type) -> Self::Output {
+                    return match self {
+                        Self::$name(lhs) => lhs + rhs,
+                        _ => panic!("{} => invalid operation", stringify!($name)),
+                    };
+                }
+            }
+
             impl<const ROWS: usize, const COLS: usize> std::ops::Sub<$name<ROWS, COLS>> for Number<ROWS, COLS> {
                 type Output = $name<ROWS, COLS>;
 
                 fn sub(self, rhs: $name<ROWS, COLS>) -> Self::Output {
+                    return match self {
+                        Self::$name(lhs) => lhs - rhs,
+                        _ => panic!("{} => invalid operation", stringify!($name)),
+                    };
+                }
+            }
+
+            impl<const ROWS: usize, const COLS: usize> std::ops::Sub<$type> for Number<ROWS, COLS> {
+                type Output = $name<ROWS, COLS>;
+
+                fn sub(self, rhs: $type) -> Self::Output {
                     return match self {
                         Self::$name(lhs) => lhs - rhs,
                         _ => panic!("{} => invalid operation", stringify!($name)),
