@@ -111,6 +111,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "neo_storage"
+version = "0.1.0"
+
+[[package]]
 name = "neo_tensor"
 version = "0.1.0"
 dependencies = [

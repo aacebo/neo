@@ -1,4 +1,4 @@
 [workspace]
 
 resolver = "3"
-members = [ "neo_core","neo_nn", "neo_tensor", "neo_token"]
+members = [ "neo_core","neo_nn", "neo_storage", "neo_tensor", "neo_token"]
