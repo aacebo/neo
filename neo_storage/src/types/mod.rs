@@ -1,29 +1,53 @@
+mod int;
+pub use int::*;
+
 mod int8;
 pub use int8::*;
 
-use crate::Serializer;
+mod int16;
+pub use int16::*;
+
+mod int32;
+pub use int32::*;
+
+mod int64;
+pub use int64::*;
+
+use crate::{Serializer, value::Value};
 
 #[derive(Debug, Clone, Copy)]
 pub enum Type {
-    Int8(Int8),
+    Int(Int),
 }
 
 impl Type {
     pub fn int8() -> Self {
-        return Self::Int8(Int8);
+        return Self::Int(Int::Int8(Int8));
+    }
+
+    pub fn int16() -> Self {
+        return Self::Int(Int::Int16(Int16));
+    }
+
+    pub fn int32() -> Self {
+        return Self::Int(Int::Int32(Int32));
+    }
+
+    pub fn int64() -> Self {
+        return Self::Int(Int::Int64(Int64));
     }
 }
 
-impl Serializer<i8> for Type {
-    fn serialize(&self, value: &i8) -> Result<Vec<u8>, crate::SerialError> {
+impl Serializer<Value> for Type {
+    fn serialize(&self, value: &Value) -> Result<Vec<u8>, crate::error::Error> {
         return match self {
-            Self::Int8(t) => t.serialize(value),
+            Self::Int(t) => t.serialize(value),
         };
     }
 
-    fn deserialize(&self, bytes: &[u8]) -> Result<i8, crate::SerialError> {
+    fn deserialize(&self, bytes: &[u8]) -> Result<Value, crate::error::Error> {
         return match self {
-            Self::Int8(t) => t.deserialize(bytes),
+            Self::Int(t) => t.deserialize(bytes),
         };
     }
 }
@@ -31,7 +55,7 @@ impl Serializer<i8> for Type {
 impl std::fmt::Display for Type {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         return match self {
-            Self::Int8(t) => write!(f, "Type::{}", t),
+            Self::Int(t) => write!(f, "Type::{}", t),
         };
     }
 }
